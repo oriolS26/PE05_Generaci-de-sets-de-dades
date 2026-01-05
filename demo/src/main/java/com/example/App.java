@@ -67,4 +67,49 @@ public class App {
             }
         } while (!opcio.equals("4"));
     }
+
+    public void generarSet() {
+
+        System.out.print("Nom del set: ");
+        String nom = sc.nextLine();
+
+        System.out.print("Tipus de dada (1-Enters, 2-Decimals, 3-Text): ");
+        String tipusOp = sc.nextLine();
+
+        String tipus = tipusOp.equals("1") ? "números enters"
+                : tipusOp.equals("2") ? "números decimals"
+                : "text";
+
+        System.out.print("Quantitat: ");
+        int quantitat = Integer.parseInt(sc.nextLine());
+
+        System.out.print("Descripció de les dades: ");
+        String desc = sc.nextLine();
+
+        // Construcció del prompt
+        
+        String prompt = "Genera una llista Java amb " + quantitat + " elements de tipus " + tipus
+                + ". Dades: " + desc + ". Retorna només la llista.";
+
+        try {
+            String apiKey = System.getenv("GEMINI_API_KEY");
+            Client client = Client.builder().apiKey(apiKey).build();
+            GenerateContentResponse response = client.models.generateContent("gemini-2.5-flash", prompt, null);
+            String text = response.text().trim();
+
+            if (!text.startsWith("[") || !text.endsWith("]")) {
+                System.out.println("La resposta no és una llista vàlida.");
+                return;
+            }
+
+            text = text.substring(1, text.length() - 1);
+            List<String> llista = text.isEmpty() ? new ArrayList<>() : Arrays.asList(text.split("\\s*,\\s*"));
+
+            datasets.put(nom, llista);
+            System.out.println("Set \"" + nom + "\" guardat correctament!");
+
+        } catch (Exception e) {
+            System.out.println("Error cridant a Gemini.");
+        }
+    }
 }
