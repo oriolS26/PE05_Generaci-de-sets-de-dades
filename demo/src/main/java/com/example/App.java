@@ -113,7 +113,7 @@ public class App {
         }
     }
 
-    private void visualitzarSets() {
+    public void visualitzarSets() {
         if (datasets.isEmpty()) {
             System.out.println("No hi ha sets disponibles.");
             return;
@@ -134,6 +134,32 @@ public class App {
             else System.out.println("Aquest set no existeix.");
         } else if (op.equals("2")) {
             datasets.forEach((nom, llista) -> System.out.println(nom + ": " + llista));
+        } else {
+            System.out.println("Opció no vàlida.");
+        }
+    }
+    
+        public void esborrarSets() {
+        if (datasets.isEmpty()) {
+            System.out.println("No hi ha sets a esborrar.");
+            return;
+        }
+
+        System.out.println("1. Esborrar un set");
+        System.out.println("2. Esborrar tots");
+        System.out.print("Opció: ");
+        String op = sc.nextLine();
+
+        if (op.equals("1")) {
+            System.out.println("Sets disponibles:");
+            datasets.keySet().forEach(n -> System.out.println("- " + n));
+            System.out.print("Quin vols esborrar?: ");
+            String nom = sc.nextLine();
+            if (datasets.remove(nom) != null) System.out.println("Set eliminat correctament.");
+            else System.out.println("Aquest set no existeix.");
+        } else if (op.equals("2")) {
+            datasets.clear();
+            System.out.println("Tots els sets han estat eliminats.");
         } else {
             System.out.println("Opció no vàlida.");
         }
