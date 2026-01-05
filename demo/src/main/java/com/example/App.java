@@ -87,7 +87,7 @@ public class App {
         String desc = sc.nextLine();
 
         // Construcció del prompt
-        
+
         String prompt = "Genera una llista Java amb " + quantitat + " elements de tipus " + tipus
                 + ". Dades: " + desc + ". Retorna només la llista.";
 
@@ -110,6 +110,32 @@ public class App {
 
         } catch (Exception e) {
             System.out.println("Error cridant a Gemini.");
+        }
+    }
+
+    private void visualitzarSets() {
+        if (datasets.isEmpty()) {
+            System.out.println("No hi ha sets disponibles.");
+            return;
+        }
+
+        System.out.println("1. Visualitzar un set");
+        System.out.println("2. Visualitzar tots");
+        System.out.print("Opció: ");
+        String op = sc.nextLine();
+
+        if (op.equals("1")) {
+            System.out.println("Sets disponibles:");
+            datasets.keySet().forEach(n -> System.out.println("- " + n));
+            System.out.print("Quin vols visualitzar?: ");
+            String nom = sc.nextLine();
+            List<String> llista = datasets.get(nom);
+            if (llista != null) System.out.println(nom + ": " + llista);
+            else System.out.println("Aquest set no existeix.");
+        } else if (op.equals("2")) {
+            datasets.forEach((nom, llista) -> System.out.println(nom + ": " + llista));
+        } else {
+            System.out.println("Opció no vàlida.");
         }
     }
 }
